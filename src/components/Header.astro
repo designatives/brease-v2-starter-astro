@@ -1,0 +1,32 @@
+---
+import { fieldPath, type LocaleContext, localeHref, navPath } from 'brease-client'
+
+import LocaleMenu from '@/components/LocaleMenu.astro'
+import type { Global, NavLink } from '@/lib/brease'
+
+// The site name, the main navigation and the locale menu.
+type Props = { global: Global; links: NavLink[]; context: LocaleContext }
+const { global, links, context } = Astro.props
+---
+
+<header class="site-header" data-brease-block="Header">
+  <div class="container header-inner">
+    <a class="site-name" href={localeHref(context.settings, '', context.locale)}>
+      <span data-brease={global.pageId ? fieldPath('siteName', global.pageId) : undefined}>
+        {global.content.siteName}
+      </span>
+    </a>
+    <div class="header-end">
+      <nav aria-label="Main" data-brease={navPath('main')}>
+        {
+          links.map((l) => (
+            <a href={l.href} target={l.target === '_blank' ? '_blank' : undefined}>
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
+      <LocaleMenu context={context} />
+    </div>
+  </div>
+</header>

@@ -1,0 +1,25 @@
+---
+import { sectionAttrs } from 'brease-client'
+
+import type { FeaturesSection } from '@/lib/content'
+
+type Props = { section: FeaturesSection; index: number }
+const { section, index } = Astro.props
+const p = `sections.${index}`
+---
+
+<section class="features" {...sectionAttrs(section)}>
+  <div class="container">
+    <h2 data-brease={`${p}.title`}>{section.title}</h2>
+    <div class="grid">
+      {
+        section.items.map((item, i) => (
+          <article class="card">
+            <h3 data-brease={`${p}.items.${i}.title`}>{item.title}</h3>
+            <p data-brease={`${p}.items.${i}.text`}>{item.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,18 @@
+---
+import { sectionAttrs } from 'brease-client'
+
+import type { HeroSection } from '@/lib/content'
+
+type Props = { section: HeroSection; index: number }
+const { section, index } = Astro.props
+const p = `sections.${index}`
+---
+
+<section class="hero" {...sectionAttrs(section)}>
+  <div class="container">
+    <p class="eyebrow" data-brease={`${p}.eyebrow`}>{section.eyebrow}</p>
+    <h1 data-brease={`${p}.title`}>{section.title}</h1>
+    <p class="lead" data-brease={`${p}.text`}>{section.text}</p>
+    <a class="button" href={section.cta.href} data-brease={`${p}.cta.label`}>{section.cta.label}</a>
+  </div>
+</section>

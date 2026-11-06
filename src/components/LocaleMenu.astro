@@ -1,0 +1,24 @@
+---
+import { type LocaleContext, localeLinks } from 'brease-client'
+
+// The locale selector in the header; shows only when more than one locale has content.
+type Props = { context: LocaleContext }
+const links = localeLinks(Astro.props.context)
+---
+
+{
+  links.length > 1 && (
+    <div class="locales" role="group" aria-label="Language">
+      {links.map((l) => (
+        <a
+          href={l.href}
+          hreflang={l.locale}
+          lang={l.locale}
+          aria-current={l.current ? 'page' : undefined}
+        >
+          {l.label}
+        </a>
+      ))}
+    </div>
+  )
+}

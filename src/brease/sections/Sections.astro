@@ -1,0 +1,25 @@
+---
+import { sectionsAttrs } from 'brease-client'
+
+import type { Section } from '@/lib/content'
+
+import Closing from './closing/Closing.astro'
+import Features from './features/Features.astro'
+import Hero from './hero/Hero.astro'
+import Text from './text/Text.astro'
+
+// Renders `content.sections` in order; a type that isn't in the map renders nothing.
+type Props = { sections: Section[] | undefined }
+
+// Section type (its folder name) to component.
+const components: Record<string, any> = { hero: Hero, features: Features, closing: Closing, text: Text }
+---
+
+<div {...sectionsAttrs}>
+  {
+    (Astro.props.sections ?? []).map((section, index) => {
+      const Component = components[section.type]
+      return Component ? <Component section={section} index={index} /> : null
+    })
+  }
+</div>

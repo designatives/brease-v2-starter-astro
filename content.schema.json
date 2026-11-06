@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Page content",
+  "description": "Content JSON of every Brease page, per template (the `template` key). Section fields: src/brease/sections/<type>/section.json. TypeScript mirror: src/lib/content.ts.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/home"
+    },
+    {
+      "$ref": "#/$defs/page"
+    },
+    {
+      "$ref": "#/$defs/global"
+    }
+  ],
+  "$defs": {
+    "home": {
+      "type": "object",
+      "required": ["template", "sections"],
+      "properties": {
+        "template": {
+          "const": "home"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type"]
+          }
+        }
+      }
+    },
+    "page": {
+      "type": "object",
+      "required": ["template", "title", "sections"],
+      "properties": {
+        "template": {
+          "const": "page"
+        },
+        "title": {
+          "type": "string"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type"]
+          }
+        }
+      }
+    },
+    "global": {
+      "type": "object",
+      "required": ["template", "siteName", "footer"],
+      "properties": {
+        "template": {
+          "const": "global"
+        },
+        "siteName": {
+          "type": "string"
+        },
+        "footer": {
+          "type": "object",
+          "required": ["text", "copyright"],
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "copyright": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

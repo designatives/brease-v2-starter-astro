@@ -1,0 +1,25 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { templates } from '@/brease/templates'
+import { brease, getPage, localeOf } from '@/lib/brease'
+
+// Every page in every locale: Brease resolves which locale and page a path is, the page's content picks
+// its template (src/brease/templates). Built once per release; the dev server (the editor's preview)
+// renders each request, so pages added in the editor show without a restart.
+export const prerender = !import.meta.env.DEV
+
+export async function getStaticPaths() {
+  return (await brease.routes()).map(({ path }) => ({ params: { path: path.join('/') || undefined } }))
+}
+
+const path = Astro.params.path
+const route = await brease.route(path)
+const page = route && (await getPage(route.slug, route.locale))
+const Template = page && templates[page.content.template]
+if (!route || !page || !Template) return new Response(null, { status: 404 })
+const context = await localeOf(path)
+---
+
+<Layout context={context} seo={page.resolvedSeo}>
+  <Template page={page as never} />
+</Layout>

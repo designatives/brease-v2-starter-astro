@@ -1,0 +1,11 @@
+---
+import type { Page } from 'brease-client'
+
+import Sections from '@/brease/sections/Sections.astro'
+import type { HomeContent } from '@/lib/content'
+
+type Props = { page: Page<HomeContent> }
+const c = Astro.props.page.content
+---
+
+<Sections sections={c.sections} />

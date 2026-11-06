@@ -1,0 +1,44 @@
+---
+import { ga4Html, type LocaleContext, type ResolvedSeo } from 'brease-client'
+import { breaseHead } from 'brease-client/astro'
+import { Font } from 'astro:assets'
+
+import Footer from '@/components/Footer.astro'
+import Header from '@/components/Header.astro'
+import { getGlobal, getLinks, getSite, ogLocale } from '@/lib/brease'
+import '@/styles.css'
+
+// Every page's shell. `seo` is the page's Brease resolvedSeo; the 404 page passes only a title.
+type Props = { context: LocaleContext; seo?: ResolvedSeo; title?: string }
+const { context, seo, title } = Astro.props
+const { locale } = context
+const [site, global, nav, footer] = await Promise.all([
+  getSite(),
+  getGlobal(locale),
+  getLinks('main', locale),
+  getLinks('footer', locale),
+])
+const siteName = site.seo[locale]?.siteName || global.content.siteName
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Font cssVariable="--font-sans" preload />
+    {seo ? <Fragment set:html={breaseHead(seo)} /> : <title>{title}</title>}
+    {siteName && <meta name="application-name" content={siteName} />}
+    {siteName && !seo?.openGraph.siteName && <meta property="og:site_name" content={siteName} />}
+    <meta property="og:locale" content={ogLocale(locale)} />
+    {!seo?.openGraph.type && <meta property="og:type" content="website" />}
+    {!seo?.twitter.card && <meta name="twitter:card" content="summary_large_image" />}
+    <Fragment set:html={ga4Html(site)} />
+  </head>
+  <body>
+    <Header global={global} links={nav} context={context} />
+    <main>
+      <slot />
+    </main>
+    <Footer global={global} links={footer} />
+  </body>
+</html>

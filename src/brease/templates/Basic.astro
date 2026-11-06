@@ -1,0 +1,17 @@
+---
+import { fieldPath, type Page } from 'brease-client'
+
+import Sections from '@/brease/sections/Sections.astro'
+import type { BasicContent } from '@/lib/content'
+
+// A plain page: a fixed title (the page's <h1>) over its sections.
+type Props = { page: Page<BasicContent> }
+const c = Astro.props.page.content
+---
+
+<article class="article">
+  <div class="container narrow">
+    <h1 data-brease={fieldPath('title')}>{c.title}</h1>
+  </div>
+  <Sections sections={c.sections} />
+</article>

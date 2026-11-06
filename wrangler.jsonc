@@ -1,0 +1,10 @@
+// Cloudflare Workers serves the built site as static assets; no Worker code runs.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "brease-site",
+  "compatibility_date": "2026-10-22",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+  },
+}

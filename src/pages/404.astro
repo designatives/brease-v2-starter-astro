@@ -1,0 +1,16 @@
+---
+import { localeHref } from 'brease-client'
+
+import Layout from '@/layouts/Layout.astro'
+import { localeOf } from '@/lib/brease'
+
+const context = await localeOf()
+---
+
+<Layout context={context} title="Page not found">
+  <div class="not-found">
+    <h1>404</h1>
+    <p>This page doesn’t exist.</p>
+    <a class="button" href={localeHref(context.settings, '', context.locale)}>Back to the home page</a>
+  </div>
+</Layout>
